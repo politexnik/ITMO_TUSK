@@ -1,22 +1,35 @@
 package RU.POLITEXNIK;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
-        int[] arr = {3,7,8,5,2,1,9,4,4,16,3,4/*,4,56,8,90,22,11,5,0,34*/};
+        // write your code here
+        int[] arr = {192, 46, 88, 487, 292, 82, 385, 312, 313, 316, 35, 252, 201, 255, 355, 390, 449, 41, 142, 178};
+//        int[] arr = new int[20/*Integer.MAX_VALUE*/];
+//        Random random = new Random();
+//        for (int i = 0; i < arr.length; i++) {
+//            arr[i] = random.nextInt(500);
+//        }
         System.out.println(Arrays.toString(arr));
-        quickSort(arr, 0, arr.length - 1);
+        quickSort(arr,0, arr.length - 1);
+        for (int i = 0; i < arr.length-1; i++) {
+            if (arr[i] > arr[i+1]) {
+                System.out.println("false " + i);
+                System.out.println(arr[i]);
+            }
+        }
         System.out.println(Arrays.toString(arr));
-
     }
+
+
 
     static void quickSort(int[] arr, int startPos, int endPos) {
 
         //Условия выхода из рекурсии
-        if (startPos == endPos) {
+        if (startPos >= endPos) {
             return;
         } else if ((endPos - startPos) == 1) {
             if (arr[startPos] > arr[endPos]) {
@@ -43,7 +56,7 @@ public class Main {
         int baseElem = arr[endPos];     //опорный элемент
         int baseElemPos = endPos;       //его позиция
         int baseElemCount = 1;      //кол-во элементов в среднем массиве
-        System.out.println(Arrays.toString(arr));
+
         while (leftBorderPos < baseElemPos) {
             //int[] arrbackup = Arrays.copyOf(arr, arr.length);
 //            if (rightBorderPos == leftBorderPos) {
@@ -58,7 +71,9 @@ public class Main {
             while (arr[leftBorderPos] < baseElem) {
                 leftBorderPos++;
             }
-
+            if (leftBorderPos == baseElemPos) {
+                break;
+            }
             int temp = arr[leftBorderPos];
             arr[leftBorderPos] = arr[rightBorderPos];
             arr[rightBorderPos] = baseElem;
@@ -67,8 +82,16 @@ public class Main {
             baseElemPos--;
             rightBorderPos--;
 
-            //if (rightBorderPos == leftBorderPos) break;
 
+            if (rightBorderPos == leftBorderPos) {
+                if (arr[leftBorderPos] > baseElem) {
+                    arr[baseElemPos + baseElemCount -1] = arr[leftBorderPos];
+                    arr[leftBorderPos] = baseElem;
+                    baseElemPos--;
+                }
+                break;
+            }
+            System.out.println(Arrays.toString(arr));
             //System.out.printf("CountBase %d. BaseelemPos %d\n", baseElemCount, baseElemPos);
         }
 
