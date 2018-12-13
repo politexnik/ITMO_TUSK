@@ -33,10 +33,10 @@ public class Main {
         F.connectWithPoint(E);
         H.connectWithPoint(E);
         I.connectWithPoint(E);
+        A.connectWithPoint(K);
 
         Route route = searchWay(A, E);
         System.out.println(route);
-
     }
 
     public static Route searchWay(PointNode A, PointNode B){
@@ -47,8 +47,8 @@ public class Main {
             //сумме пройденного расстояния и оставшегося пути по прямой
             PointNode o1LastPoint = o1.pointList.get(o1.pointList.size() - 1);
             PointNode o2LastPoint = o2.pointList.get(o2.pointList.size() - 1);
-            double fx1 = o1.length + Math.sqrt(Math.pow(o1LastPoint.x - B.x, 2) + Math.pow(o1LastPoint.x - B.y, 2));
-            double fx2 = o2.length + Math.sqrt(Math.pow(o2LastPoint.x - B.x, 2) + Math.pow(o2LastPoint.x - B.y, 2));
+            double fx1 = o1.length + Math.sqrt(Math.pow(o1LastPoint.x - B.x, 2) + Math.pow(o1LastPoint.y - B.y, 2));
+            double fx2 = o2.length + Math.sqrt(Math.pow(o2LastPoint.x - B.x, 2) + Math.pow(o2LastPoint.y - B.y, 2));
             if (fx1 - fx2 == 0) return 0;
             return fx1 - fx2 > 0? 1: -1;
             });
@@ -58,7 +58,7 @@ public class Main {
             currentWay = queue.poll();
             currentPoint = currentWay.pointList.get(currentWay.pointList.size() - 1);   //берем последнюю точку в пути
             for (PointNode point: currentPoint.connectionPointList) {
-                if (point == currentWay.pointList.get(currentWay.pointList.size() - 1)) continue;   // если путь обратно - следующая итерация
+                if (currentWay.pointList.size() > 1 && point == currentWay.pointList.get(currentWay.pointList.size() - 2)) continue;   // если путь обратно - следующая итерация
                 Route way = new Route(currentWay);
                 way.add(point);
                 queue.add(way);
@@ -67,7 +67,6 @@ public class Main {
                 }
             }
         }
-
         return currentWay;
     }
 }
