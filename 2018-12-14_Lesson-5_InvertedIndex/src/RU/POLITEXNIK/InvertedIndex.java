@@ -15,10 +15,13 @@ public class InvertedIndex {
 
         //пробег по полученному списку текстов
         for (Path path: stringSet) {
-            String[] strArr = (String[])Files.readAllLines(path).toArray();
-            for (String strLine: strArr) {
-                String[] words = strLine.split(" ");//разбили строки на слова, пробег по каждому слову в тексте
+            //
+            for (String strLine: Files.readAllLines(path)) {
+                String[] words = strLine.split("»?[,!?\":;\\.]*\\s«?");//разбили строки на слова, пробег по каждому слову в тексте
                 for (String word: words) {
+                    word = word.toLowerCase();
+                    if (word.length() == 0)
+                        continue;
                     wordsFrequenceQueue.put(word, wordsFrequenceQueue.getOrDefault(word, 0) + 1);
                     Set<Path> currentPathList = map.getOrDefault(word, new HashSet<>());
                     //если вернул новый список - добавляем его в мапу
@@ -28,12 +31,31 @@ public class InvertedIndex {
                 }
             }
         }
-        ArrayList<Map.Entry<String, Integer>> freqenceList = new ArrayList(wordsFrequenceQueue.entrySet());
-                Collections.sort(freqenceList, (o1, o2) -> {
+        ArrayList<Map.Entry<String, Integer>> frequenceList = new ArrayList(wordsFrequenceQueue.entrySet());
+                Collections.sort(frequenceList, (o1, o2) -> {
                     return Integer.compare(o1.getValue(), o2.getValue());
                 });
-        Collections.reverse(freqenceList);
-        map.get("123").retainAll();
+        Collections.reverse(frequenceList);
+    }
+
+    public Set<Path> searchPhrase(String phrase){
+
+        String[] words = phrase.split("\\s");
+        ArrayList<Set<Path>> pathSetList = new ArrayList();
+        for (String word: words) {
+            Set<Path> pathSet = map.get(word);
+            if (pathSet != null) {
+                pathSetList.add(pathSet);
+            } else {
+                return new HashSet<>();
+            }
+        }
+        Set<Path> resutSet = new HashSet<>(pathSetList.get(0));
+        //Set<Path> resutSet = Objects. pathSetList.get(0);
+        for (int i = 1; i < pathSetList.size() - 1; i++) {
+            resutSet.retainAll(pathSetList.get(i));
+        }
+        return resutSet;
     }
 
 
