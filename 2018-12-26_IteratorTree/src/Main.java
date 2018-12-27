@@ -15,41 +15,16 @@ public class Main {
             list.add("4");
         //}
 
-        System.out.println(normalizeList(list));
+        IteratorForIteratorTree iterForTree = new IteratorForIteratorTree(list);
+
+
+        System.out.println(iterForTree.next());
+        System.out.println(iterForTree.next());
+        System.out.println(iterForTree.next());
+        System.out.println(iterForTree.next());
 
 
 
-    }
-
-
-    public static ArrayList<String> normalizeList(ArrayList baseList) {
-        ArrayList<String> targetList = new ArrayList<>();
-
-        ArrayDeque IterDeque = new ArrayDeque();
-        for (Object obj : baseList) {
-            if (obj instanceof Iterator) {
-                IterDeque.add(obj);
-            } else {
-                targetList.add((String) obj);
-            }
-        }
-        Object currentObject;
-        while (!IterDeque.isEmpty()) {
-            currentObject = IterDeque.poll();
-
-            Iterator<Object> iter = (Iterator) currentObject;
-            while (iter.hasNext()) {
-                Object obj = iter.next();
-                if (obj instanceof String ) {
-                    targetList.add((String) obj);
-                } else {
-                    IterDeque.add(iter.next());
-                }
-            }
-
-        }
-
-        return targetList;
     }
 
 
